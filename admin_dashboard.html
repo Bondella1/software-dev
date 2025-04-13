@@ -1,8 +1,120 @@
-<h1>Admin Dashboard</h1>
-<a href="{{ url_for('logout') }}">Logout</a>
-<h2>Employee List</h2>
-<ul>
-  {% for employee in employees %}
-    <li>{{ employee.name }} - {{ employee.empid }}</li>
-  {% endfor %}
-</ul>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background-color: #f0f2f5;
+      color: #333;
+    }
+
+    header {
+      background-color: #1f2937;
+      color: white;
+      padding: 20px 40px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 24px;
+    }
+
+    .dashboard {
+      padding: 40px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 12px;
+      padding: 30px 20px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+      text-align: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 16px;
+      display: block;
+      margin-top: 15px;
+    }
+
+    .icon {
+      font-size: 36px;
+      color: #4f46e5;
+    }
+
+    @media (max-width: 600px) {
+      .dashboard {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Admin Dashboard - Employee Management System</h1>
+  </header>
+
+  <section class="dashboard">
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="add_employee.html">Add New Employee</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="search_employee.html">Search/Edit Employee</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="update_salary.html">Update Salary by %</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="report_pay_history.html">Pay Statement History</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="report_pay_by_title.html">Pay by Job Title</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="report_pay_by_division.html">Pay by Division</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"></div>
+      <a href="logout.html">Logout</a>
+    </div>
+
+  </section>
+
+</body>
+</html>
