@@ -1,15 +1,66 @@
-<form method="POST">
-  <input name="search_term" placeholder="Search by name, DOB, SSN, or empid">
-  <select name="search_type">
-    <option value="name">Name</option>
-    <option value="dob">DOB</option>
-    <option value="ssn">SSN</option>
-    <option value="empid">Employee ID</option>
-  </select>
-  <button type="submit">Search</button>
-</form>
-{% if employee %}
-  <p>Name: {{ employee.name }}</p>
-  <p>EmpID: {{ employee.empid }}</p>
-  <!-- Add other employee details -->
-{% endif %}
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Search Employee</title>
+  <style>
+    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
+    .search-form, .results { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
+    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
+    th { background: #007BFF; color: white; }
+    input[type="text"], input[type="date"] { width: 100%; padding: 8px; margin: 5px 0; }
+    button { padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <h2>Search Employee</h2>
+
+  <div class="search-form">
+    <form method="GET" action="search_employee.html">
+      <label>Employee ID:</label>
+      <input type="text" name="empid" placeholder="E12345">
+
+      <label>Full Name:</label>
+      <input type="text" name="fullname" placeholder="John Doe">
+
+      <label>DOB:</label>
+      <input type="date" name="dob">
+
+      <label>SSN:</label>
+      <input type="text" name="ssn" placeholder="123-45-6789">
+
+      <br><br>
+      <button type="submit">Search</button>
+    </form>
+  </div>
+
+  <div class="results">
+    <h3>Search Results:</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Emp ID</th>
+          <th>Name</th>
+          <th>DOB</th>
+          <th>SSN</th>
+          <th>Job Title</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Results populated dynamically via backend or JS -->
+        <tr>
+          <td>E12345</td>
+          <td>Jane Smith</td>
+          <td>1990-05-12</td>
+          <td>***-**-6789</td>
+          <td>HR Manager</td>
+          <td><a href="edit_employee.html?empid=E12345">Edit</a></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+</body>
+</html>
