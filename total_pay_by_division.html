@@ -1,0 +1,17 @@
+<h1>Total Pay by Division</h1>
+<table>
+  <thead>
+    <tr>
+      <th>Division</th>
+      <th>Total Pay</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for row in result %}
+      <tr>
+        <td>{{ row.division }}</td>
+        <td>{{ row.total_pay }}</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
