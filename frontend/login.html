@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .login-card {
+      background: white;
+      padding: 40px 30px;
+      border-radius: 16px;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 400px;
+    }
+
+    h2 {
+      text-align: center;
+      margin-bottom: 25px;
+      color: #333;
+      font-weight: 600;
+    }
+
+    .form-group {
+      margin-bottom: 18px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 500;
+      color: #444;
+    }
+
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 10px 12px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 14px;
+      transition: border-color 0.3s;
+    }
+
+    input:focus {
+      border-color: #007BFF;
+      outline: none;
+    }
+
+    .tooltip {
+      font-size: 12px;
+      color: #777;
+      margin-top: 4px;
+    }
+
+    .show-password {
+      margin-top: 8px;
+      font-size: 14px;
+      color: #333;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: #007BFF;
+      border: none;
+      color: white;
+      font-size: 16px;
+      font-weight: 500;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 20px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .error-message {
+      color: #d8000c;
+      background-color: #ffd2d2;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 8px;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="login-card">
+    <h2>Login</h2>
+
+    <!-- Error message placeholder -->
+    <div class="error-message" id="errorMessage">
+      Invalid username or password. Please try again.
+    </div>
+
+    <form id="loginForm" method="POST" action="/login">
+      <div class="form-group">
+        <label for="username">Username</label>
+        <input
+          id="username"
+          name="username"
+          type="text"
+          placeholder="E12345 or A12345"
+          pattern="[EA][0-9]{5}"
+          title="Must start with 'E' or 'A' followed by 5 digits"
+          required
+        >
+        <div class="tooltip">Starts with E or A, followed by 5 digits.</div>
+      </div>
+
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          type="password"
+          placeholder="Enter your password"
+          pattern="^(?=(?:.*[A-Za-z]){3,})(?=.*[A-Z])(?=.*\d{3,})(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{8,}$"
+          title="Min 8 chars, 3 letters, 1 uppercase, 3 digits, 1 special (!@#$%^&*)"
+          required
+        >
+        <div class="tooltip">At least 8 characters, 3 letters, 3 digits, 1 uppercase, 1 special (!@#$%^&*)</div>
+        <label class="show-password">
+          <input type="checkbox" id="togglePassword"> Show Password
+        </label>
+      </div>
+
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    // Show/hide password
+    document.getElementById("togglePassword").addEventListener("change", function () {
+      const passwordField = document.getElementById("password");
+      passwordField.type = this.checked ? "text" : "password";
+    });
+
+    //Show fake error message on incorrect login attempt
+    // Replace this block with real server-side validation
+    document.getElementById("loginForm").addEventListener("submit", function (e) {
+      const username = document.getElementById("username").value;
+      const password = document.getElementById("password").value;
+
+      // Simulated check (replace with real backend call)
+      if (username !== "E12345" || password !== "GoodPass123!") {
+        e.preventDefault(); // stop form submission
+        document.getElementById("errorMessage").style.display = "block";
+      }
+    });
+  </script>
+
+</body>
+</html>
+
+
+
+
+
