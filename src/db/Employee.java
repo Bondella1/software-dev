@@ -1,3 +1,4 @@
+package db;
 public class Employee{
     private int empid;
     private String Fname;
