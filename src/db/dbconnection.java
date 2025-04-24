@@ -1,3 +1,5 @@
+package db;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -12,6 +14,12 @@ public class DBConnection {
             String URL = dotenv.get("DB_URL");
             String USER = dotenv.get("DB_USER");
             String PASSWORD = dotenv.get("DB_PASSWORD");
+
+            try {
+                Class.forName("com.mysql.cj.jdbc.Driver");
+            } catch (ClassNotFoundException e) {
+                throw new SQLException("MySQL JDBC Driver not found on classpath", e);
+            }
 
             connection = DriverManager.getConnection(URL, USER, PASSWORD);
             System.out.println("Connected to database");
