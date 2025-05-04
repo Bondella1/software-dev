@@ -1,62 +1,590 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Search Employee</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
   <style>
-    body { font-family: Arial; padding: 20px; background: #f9f9f9; }
-    .search-form, .results { background: #fff; padding: 20px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 20px; }
-    table { width: 100%; border-collapse: collapse; margin-top: 10px; }
-    th, td { padding: 10px; border: 1px solid #ccc; text-align: left; }
-    th { background: #007BFF; color: white; }
-    input[type="text"], input[type="date"] { width: 100%; padding: 8px; margin: 5px 0; }
-    button { padding: 10px 15px; background: #28a745; color: white; border: none; border-radius: 5px; cursor: pointer; }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    
+    body { 
+      font-family: 'Inter', sans-serif; 
+      padding: 20px; 
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      min-height: 100vh;
+      color: #333;
+    }
+    
+    h2 {
+      color: #fff;
+      margin-bottom: 20px;
+      text-shadow: 0 1px 2px rgba(0,0,0,0.1);
+    }
+    
+    .container {
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    
+    .search-form, .results { 
+      background: #fff; 
+      padding: 25px; 
+      border-radius: 12px; 
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08); 
+      margin-bottom: 25px; 
+    }
+    
+    .search-form h3, .results h3 {
+      margin-bottom: 15px;
+      color: #2c3e50;
+      font-weight: 600;
+      font-size: 18px;
+    }
+    
+    .form-row {
+      display: flex;
+      flex-wrap: wrap;
+      margin: 0 -10px;
+    }
+    
+    .form-group {
+      flex: 1 0 200px;
+      padding: 0 10px;
+      margin-bottom: 15px;
+    }
+    
+    label {
+      display: block;
+      font-size: 14px;
+      font-weight: 500;
+      margin-bottom: 5px;
+      color: #555;
+    }
+    
+    input[type="text"], 
+    input[type="date"],
+    select {
+      width: 100%; 
+      padding: 10px 12px; 
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      font-size: 14px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    
+    input:focus,
+    select:focus {
+      border-color: #4f9df9;
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(79, 157, 249, 0.1);
+    }
+    
+    .buttons {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
+    }
+    
+    button {
+      padding: 12px 20px;
+      background: #4f9df9;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+    
+    button:hover {
+      background: #3b7dca;
+    }
+    
+    button.reset {
+      background: #f0f0f0;
+      color: #555;
+    }
+    
+    button.reset:hover {
+      background: #e0e0e0;
+    }
+    
+    table { 
+      width: 100%; 
+      border-collapse: collapse; 
+      margin-top: 15px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+    
+    th, td { 
+      padding: 12px 15px; 
+      text-align: left; 
+    }
+    
+    th { 
+      background: #4f9df9; 
+      color: white;
+      font-weight: 500;
+      white-space: nowrap;
+    }
+    
+    td {
+      border-bottom: 1px solid #eee;
+    }
+    
+    tr:last-child td {
+      border-bottom: none;
+    }
+    
+    tr:nth-child(even) {
+      background-color: #f9fbfd;
+    }
+    
+    tr:hover {
+      background-color: #f0f7ff;
+    }
+    
+    .action-column {
+      white-space: nowrap;
+      text-align: center;
+    }
+    
+    .action-btn {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 4px;
+      text-decoration: none;
+      font-size: 13px;
+      margin: 0 2px;
+      transition: all 0.2s;
+    }
+    
+    .edit-btn {
+      background: #ebf5ff;
+      color: #0066cc;
+    }
+    
+    .edit-btn:hover {
+      background: #d6e9ff;
+    }
+    
+    .delete-btn {
+      background: #ffebee;
+      color: #d32f2f;
+    }
+    
+    .delete-btn:hover {
+      background: #ffcdd2;
+    }
+    
+    .back-link {
+      display: inline-block;
+      margin-top: 15px;
+      color: #4f9df9;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    
+    .back-link:hover {
+      text-decoration: underline;
+    }
+    
+    .search-icon {
+      margin-right: 8px;
+    }
+    
+    .advanced-filters {
+      background: #f9fbfd;
+      border: 1px solid #eee;
+      border-radius: 8px;
+      padding: 15px;
+      margin-top: 15px;
+      display: none;
+    }
+    
+    .show-filters {
+      background: none;
+      border: none;
+      color: #4f9df9;
+      font-size: 14px;
+      cursor: pointer;
+      padding: 0;
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+    }
+    
+    .show-filters:hover {
+      text-decoration: underline;
+    }
+    
+    .show-filters i {
+      margin-left: 5px;
+      transition: transform 0.3s;
+    }
+    
+    .filter-active .show-filters i {
+      transform: rotate(180deg);
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 500;
+    }
+    
+    .status-active {
+      background-color: #e8f5e9;
+      color: #2e7d32;
+    }
+    
+    .status-inactive {
+      background-color: #ffebee;
+      color: #c62828;
+    }
+    
+    .status-leave {
+      background-color: #fff8e1;
+      color: #f57f17;
+    }
+    
+    .no-results {
+      text-align: center;
+      padding: 20px;
+      color: #666;
+      font-style: italic;
+    }
+    
+    @media (max-width: 768px) {
+      .form-group {
+        flex: 1 0 100%;
+      }
+      
+      table {
+        display: block;
+        overflow-x: auto;
+      }
+    }
   </style>
 </head>
 <body>
-
-  <h2>Search Employee</h2>
-
-  <div class="search-form">
-    <form method="GET" action="/search">
-      <label>Employee ID:</label>
-      <input type="text" name="empid" placeholder="E12345">
-
-      <label>Full Name:</label>
-      <input type="text" name="fullname" placeholder="John Doe">
-
-      <label>DOB:</label>
-      <input type="date" name="dob">
-
-      <label>SSN:</label>
-      <input type="text" name="ssn" placeholder="123-45-6789">
-
-      <br><br>
-      <button type="submit">Search</button>
-    </form>
+  <div class="container">
+    <h2>Search Employee</h2>
+    
+    <div class="search-form">
+      <h3>Search Criteria</h3>
+      <form id="searchForm">
+        <div class="form-row">
+          <div class="form-group">
+            <label for="empid">Employee ID:</label>
+            <input type="text" id="empid" name="empid" placeholder="E12345">
+          </div>
+          
+          <div class="form-group">
+            <label for="fullname">Full Name:</label>
+            <input type="text" id="fullname" name="fullname" placeholder="John Doe">
+          </div>
+          
+          <div class="form-group">
+            <label for="dob">Date of Birth:</label>
+            <input type="date" id="dob" name="dob">
+          </div>
+          
+          <div class="form-group">
+            <label for="ssn">SSN:</label>
+            <input type="text" id="ssn" name="ssn" placeholder="123-45-6789">
+          </div>
+        </div>
+        
+        <button type="button" class="show-filters" id="toggleFilters">
+          Advanced Filters <i class="fas fa-chevron-down"></i>
+        </button>
+        
+        <div class="advanced-filters" id="advancedFilters">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="division">Division:</label>
+              <select id="division" name="division">
+                <option value="">All Divisions</option>
+                <option value="HR">Human Resources</option>
+                <option value="IT">Information Technology</option>
+                <option value="FIN">Finance</option>
+                <option value="MKTG">Marketing</option>
+                <option value="SALES">Sales</option>
+                <option value="OPS">Operations</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="jobTitle">Job Title:</label>
+              <input type="text" id="jobTitle" name="jobTitle" placeholder="Senior Developer">
+            </div>
+            
+            <div class="form-group">
+              <label for="status">Status:</label>
+              <select id="status" name="status">
+                <option value="">All Statuses</option>
+                <option value="active">Active</option>
+                <option value="inactive">Inactive</option>
+                <option value="onLeave">On Leave</option>
+              </select>
+            </div>
+            
+            <div class="form-group">
+              <label for="hireDate">Hire Date:</label>
+              <input type="date" id="hireDate" name="hireDate">
+            </div>
+          </div>
+        </div>
+        
+        <div class="buttons">
+          <div>
+            <button type="submit"><i class="fas fa-search search-icon"></i>Search</button>
+            <button type="reset" class="reset">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+    
+    <div class="results" id="resultsSection">
+      <h3>Search Results</h3>
+      <table id="resultsTable">
+        <thead>
+          <tr>
+            <th>Emp ID</th>
+            <th>Name</th>
+            <th>DOB</th>
+            <th>SSN</th>
+            <th>Job Title</th>
+            <th>Division</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="resultsBody">
+          <!-- Results will be populated dynamically -->
+        </tbody>
+      </table>
+      <p><a href="/admin_dashboard.html" class="back-link"><i class="fas fa-arrow-left"></i> Back to Dashboard</a></p>
+    </div>
   </div>
-
-  <div class="results">
-    <h3>Search Results:</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Emp ID</th>
-          <th>Name</th>
-          <th>DOB</th>
-          <th>SSN</th>
-          <th>Job Title</th>
-          <th>Action</th>
-        </tr>
-      </thead>
-      <tbody>
-        <!-- Results populated dynamically via backend or JS -->
-        <tr>
-
-        </tr>
-      </tbody>
-    </table>
-    <p><a href="/admin_dashboard.html">← Dashboard</a></p>
-  </div>
-
+  
+  <script>
+    // Sample employee data for demonstration
+    const employeeData = [
+      {
+        id: "E12345",
+        name: "John Smith",
+        dob: "1985-06-15",
+        ssn: "123-45-6789",
+        jobTitle: "Senior Developer",
+        division: "IT",
+        status: "active",
+        hireDate: "2018-03-10"
+      },
+      {
+        id: "E23456",
+        name: "Sarah Johnson",
+        dob: "1990-09-22",
+        ssn: "234-56-7890",
+        jobTitle: "HR Manager",
+        division: "HR",
+        status: "active",
+        hireDate: "2017-07-05"
+      },
+      {
+        id: "E34567",
+        name: "Michael Brown",
+        dob: "1982-03-08",
+        ssn: "345-67-8901",
+        jobTitle: "Financial Analyst",
+        division: "FIN",
+        status: "active",
+        hireDate: "2019-11-15"
+      },
+      {
+        id: "E45678",
+        name: "Jessica Williams",
+        dob: "1988-12-30",
+        ssn: "456-78-9012",
+        jobTitle: "Marketing Specialist",
+        division: "MKTG",
+        status: "onLeave",
+        hireDate: "2020-02-18"
+      },
+      {
+        id: "E56789",
+        name: "David Miller",
+        dob: "1979-04-17",
+        ssn: "567-89-0123",
+        jobTitle: "System Administrator",
+        division: "IT",
+        status: "active",
+        hireDate: "2016-08-22"
+      },
+      {
+        id: "E67890",
+        name: "Emily Davis",
+        dob: "1992-11-03",
+        ssn: "678-90-1234",
+        jobTitle: "Sales Representative",
+        division: "SALES",
+        status: "inactive",
+        hireDate: "2021-05-10"
+      }
+    ];
+    
+    // Toggle advanced filters
+    document.getElementById('toggleFilters').addEventListener('click', function() {
+      const filtersDiv = document.getElementById('advancedFilters');
+      if (filtersDiv.style.display === 'block') {
+        filtersDiv.style.display = 'none';
+        this.parentElement.classList.remove('filter-active');
+      } else {
+        filtersDiv.style.display = 'block';
+        this.parentElement.classList.add('filter-active');
+      }
+    });
+    
+    // Search form submission
+    document.getElementById('searchForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      // Get form values
+      const empId = document.getElementById('empid').value.toLowerCase();
+      const fullName = document.getElementById('fullname').value.toLowerCase();
+      const dob = document.getElementById('dob').value;
+      const ssn = document.getElementById('ssn').value;
+      const division = document.getElementById('division').value;
+      const jobTitle = document.getElementById('jobTitle').value.toLowerCase();
+      const status = document.getElementById('status').value;
+      const hireDate = document.getElementById('hireDate').value;
+      
+      // Filter employees based on search criteria
+      const filteredEmployees = employeeData.filter(employee => {
+        // Basic filters
+        const matchesId = !empId || employee.id.toLowerCase().includes(empId);
+        const matchesName = !fullName || employee.name.toLowerCase().includes(fullName);
+        const matchesDob = !dob || employee.dob === dob;
+        const matchesSsn = !ssn || employee.ssn.includes(ssn);
+        
+        // Advanced filters
+        const matchesDivision = !division || employee.division === division;
+        const matchesJobTitle = !jobTitle || employee.jobTitle.toLowerCase().includes(jobTitle);
+        const matchesStatus = !status || employee.status === status;
+        const matchesHireDate = !hireDate || employee.hireDate === hireDate;
+        
+        return matchesId && matchesName && matchesDob && matchesSsn && 
+               matchesDivision && matchesJobTitle && matchesStatus && matchesHireDate;
+      });
+      
+      // Display results
+      displayResults(filteredEmployees);
+    });
+    
+    // Reset form
+    document.getElementById('searchForm').addEventListener('reset', function() {
+      // Clear the results table after a short delay (to ensure form reset completes)
+      setTimeout(() => {
+        document.getElementById('resultsBody').innerHTML = '';
+      }, 10);
+    });
+    
+    // Function to display search results
+    function displayResults(employees) {
+      const resultsBody = document.getElementById('resultsBody');
+      resultsBody.innerHTML = '';
+      
+      if (employees.length === 0) {
+        resultsBody.innerHTML = '<tr><td colspan="8" class="no-results">No employees found matching your search criteria.</td></tr>';
+        return;
+      }
+      
+      // Generate table rows for each matching employee
+      employees.forEach(employee => {
+        // Format SSN for display with asterisks except last 4 digits
+        const formattedSSN = employee.ssn.replace(/^\d{3}-\d{2}/, "XXX-XX");
+        
+        // Determine status badge class
+        let statusClass = '';
+        let statusText = '';
+        
+        switch(employee.status) {
+          case 'active':
+            statusClass = 'status-active';
+            statusText = 'Active';
+            break;
+          case 'inactive':
+            statusClass = 'status-inactive';
+            statusText = 'Inactive';
+            break;
+          case 'onLeave':
+            statusClass = 'status-leave';
+            statusText = 'On Leave';
+            break;
+        }
+        
+        // Create table row
+        const row = document.createElement('tr');
+        row.innerHTML = `
+          <td>${employee.id}</td>
+          <td>${employee.name}</td>
+          <td>${formatDate(employee.dob)}</td>
+          <td>${formattedSSN}</td>
+          <td>${employee.jobTitle}</td>
+          <td>${employee.division}</td>
+          <td><span class="status-badge ${statusClass}">${statusText}</span></td>
+          <td class="action-column">
+            <a href="edit_employee.html?id=${employee.id}" class="action-btn edit-btn">
+              <i class="fas fa-edit"></i> Edit
+            </a>
+            <a href="#" class="action-btn delete-btn" onclick="confirmDelete('${employee.id}'); return false;">
+              <i class="fas fa-trash-alt"></i> Delete
+            </a>
+          </td>
+        `;
+        
+        resultsBody.appendChild(row);
+      });
+    }
+    
+    // Format date as MM/DD/YYYY
+    function formatDate(dateString) {
+      if (!dateString) return '';
+      
+      const date = new Date(dateString);
+      return date.toLocaleDateString('en-US', {
+        month: '2-digit',
+        day: '2-digit',
+        year: 'numeric'
+      });
+    }
+    
+    // Confirm delete function
+    function confirmDelete(employeeId) {
+      if (confirm(`Are you sure you want to delete employee ${employeeId}?`)) {
+        alert(`Employee ${employeeId} would be deleted in a real system.`);
+        // In a real application, you would send a delete request to the server
+        // and then update the UI accordingly
+      }
+    }
+    
+    // Optional: Load all employees on page load
+    window.addEventListener('load', function() {
+      // Uncomment the next line if you want to show all employees when the page loads
+      // displayResults(employeeData);
+    });
+  </script>
 </body>
 </html>

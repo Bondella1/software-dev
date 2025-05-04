@@ -6,6 +6,7 @@ public class Employee{
     private String SSN;
     private double Salary;
     private String HireDate;
+    private String dob;
 
     public int getEmpId() {return empid;}
     public void setEmpId(int empid) {this.empid= empid;}
@@ -27,4 +28,7 @@ public class Employee{
 
     public String getHireDate() {return HireDate;}
     public void setHireDate(String HireDate) {this.HireDate =HireDate;}
+
+    public String getDob() {return dob;}
+    public void setDob(String dob) {this.dob=dob;}
 }

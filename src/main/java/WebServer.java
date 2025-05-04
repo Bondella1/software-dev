@@ -1,4 +1,3 @@
-
 import java.sql.Connection;
 import java.util.List;
 
@@ -19,10 +18,9 @@ public class WebServer {
             return null;
         });
 
-        
         // CREATE: handle form submission from add.html
         post("/create", (req, res) -> {
-            // pull fieldrs from the form
+            // Pull fields from the form
             Employee emp = new Employee();
             emp.setFname(req.queryParams("fname"));
             emp.setLname(req.queryParams("lname"));
@@ -34,12 +32,12 @@ public class WebServer {
             try (Connection conn = DBConnection.getConnection()) {
                 new Employeedao(conn).addEmployee(emp);
             }
-            // redirect back to a confirmation or to the list page
+            // Redirect back to a confirmation or to the list page
             res.redirect("/admin_dashboard.html");
             return "";
         });
 
-        // LIST: dynamically generate a plain-HTML list
+        // LIST: Dynamically generate a plain-HTML list
         get("/doList", (req, res) -> {
             res.type("text/html");
             StringBuilder html = new StringBuilder("<h1>All employees</h1><ul>");
@@ -85,48 +83,61 @@ public class WebServer {
             return html.toString();
         });
 
-        get("/search", (req, res)-> {
+        // Search employees based on multiple fields
+        get("/search", (req, res) -> {
             res.type("text/html");
             String idParam = req.queryParams("empid");
             String nameParam = req.queryParams("fullname");
-            List<Employee> results;
+            String dobParam = req.queryParams("dob");
+            String ssnParam = req.queryParams("ssn");
 
+            List<Employee> results;
+        
             try (Connection conn = DBConnection.getConnection()) {
                 Employeedao dao = new Employeedao(conn);
                 if (idParam != null && !idParam.isBlank()) {
                     Employee e = dao.getemployeebyId(Integer.parseInt(idParam));
-                    results = e == null ? List.of(): List.of(e);
+                    results = e == null ? List.of() : List.of(e);
+                } else if (nameParam != null && !nameParam.isBlank()){
+                    results = dao.searchbyName(nameParam);
+                } else if (dobParam != null && !dobParam.isBlank()) {
+                    results = dao.searchbyDOB(dobParam);
+                } else if (ssnParam != null && !ssnParam.isBlank()) {
+                    results = dao.searchbySSN(ssnParam);
                 } else {
-                    results= dao.searchbyName(nameParam ==null ?"": nameParam);
+                    results = dao.getAllEmployees(); 
                 }
             }
+        
             StringBuilder html = new StringBuilder()
-            .append("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Search Results</title></head><body>")
-            .append("<h1>Search Results</h1>")
-            .append("<table border='1'><tr>")
-            .append("<th>Emp ID</th><th>Name</th><th>Email</th><th>Salary</th><th>Hire Date</th><th>Actions</th>")
-            .append("</tr>");
-
-            for (Employee e: results) {
-                html.append("<tr>")
-                .append("<td>").append(e.getEmpId()).append("</td>")
-                .append("<td>").append(e.getFname()).append(" ").append(e.getLname()).append("</td>")
-                .append("<td>").append(e.getemail()).append("</td>")
-                .append("<td>$").append(e.getSalary()).append("</td>")
-                .append("<td>").append(e.getHireDate()).append("</td>")
-                .append("<td>")
-                    .append("<a href=\"/edit?empid=").append(e.getEmpId()).append("\">Edit</a> | ")
-                    .append("<a href=\"/delete?empid=").append(e.getEmpId()).append("\">Delete</a>")
-                .append("</td>")
+                .append("<!DOCTYPE html><html><head><meta charset='UTF-8'><title>Search Results</title></head><body>")
+                .append("<h1>Search Results</h1>")
+                .append("<table border='1'><tr>")
+                .append("<th>Emp ID</th><th>Name</th><th>Email</th><th>Salary</th><th>Hire Date</th><th>Actions</th>")
                 .append("</tr>");
+        
+            for (Employee e : results) {
+                html.append("<tr>")
+                    .append("<td>").append(e.getEmpId()).append("</td>")
+                    .append("<td>").append(e.getFname()).append(" ").append(e.getLname()).append("</td>")
+                    .append("<td>").append(e.getemail()).append("</td>")
+                    .append("<td>$").append(e.getSalary()).append("</td>")
+                    .append("<td>").append(e.getHireDate()).append("</td>")
+                    .append("<td>")
+                        .append("<a href=\"/edit?empid=").append(e.getEmpId()).append("\">Edit</a> | ")
+                        .append("<a href=\"/delete?empid=").append(e.getEmpId()).append("\">Delete</a>")
+                    .append("</td>")
+                    .append("</tr>");
             }
+        
             html.append("</table>")
-            .append("<p><a href=\"/admin_dashboard.html\">← Dashboard</a></p>")
-            .append("</body></html>");
-
-            return html.toString();
+                .append("<p><a href=\"/admin_dashboard.html\">← Dashboard</a></p>")
+                .append("</body></html>");
+        
+            return html.toString(); // Or, render your HTML file if desired with dynamic content
         });
 
+        // Update employee details
         post("/update", (req, res)-> {
             Employee e = new Employee();
             e.setEmpId(  Integer.parseInt(req.queryParams("empid")) );
@@ -144,6 +155,7 @@ public class WebServer {
             return null;
         });
 
+        // Delete employee
         get("/delete", (req, res) -> {
             int id = Integer.parseInt(req.queryParams("empid"));
             try (Connection conn = DBConnection.getConnection()) {
@@ -156,6 +168,7 @@ public class WebServer {
             return null;
         });
 
+        // Login functionality for admin and employee
         post("/login", (req, res)-> {
             String username = req.queryParams("username");
             String password = req.queryParams("password");
@@ -163,7 +176,7 @@ public class WebServer {
             String adminUsername = "admin";
             String adminPassword = "Admin@123";
             String employeeUsername = "employee";
-            String employeePassword = "employee123";
+            String employeePassword = "Employee@123";
 
             if (username.equals(adminUsername) && password.equals(adminPassword)) {
                 req.session().attribute("role", "admin");
@@ -171,13 +184,14 @@ public class WebServer {
                 return null;
             } else if (username.equals(employeeUsername) && password.equals(employeePassword)){
                 req.session().attribute("role", "employee");
-                res.status(401);
+                res.redirect("/employee_dashboard.html");
                 return null;
             } else {
                 return "<h2>Invalid credentials! Please try again.</h2>";
             }
         });
         
+        // Admin dashboard route
         get("/admin_dashboard", (req, res) -> {
             String role =  req.session().attribute("role");
             if ("admin".equals(role)) {
@@ -188,16 +202,18 @@ public class WebServer {
             }
         });
 
+        // Employee dashboard route
         get("/employee_dashboard", (req, res) -> {
             String role = req.session().attribute("role");
             if ("employee".equals(role)) {
                 return "<h1>Welcome to the Employee Dashboard</h1><p>Employee responsibilities...</p>";
             } else {
-                res.redirect("/login"); 
+                res.redirect("/login.html"); 
                 return null;
             }
         });
 
+        // Logout route
         get("/logout", (req, res) -> {
             req.session().invalidate();  
             res.redirect("/login");  
