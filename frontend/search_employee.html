@@ -17,7 +17,7 @@
   <h2>Search Employee</h2>
 
   <div class="search-form">
-    <form method="GET" action="search_employee.html">
+    <form method="GET" action="/search">
       <label>Employee ID:</label>
       <input type="text" name="empid" placeholder="E12345">
 
@@ -51,15 +51,11 @@
       <tbody>
         <!-- Results populated dynamically via backend or JS -->
         <tr>
-          <td>E12345</td>
-          <td>Jane Smith</td>
-          <td>1990-05-12</td>
-          <td>***-**-6789</td>
-          <td>HR Manager</td>
-          <td><a href="edit_employee.html?empid=E12345">Edit</a></td>
+
         </tr>
       </tbody>
     </table>
+    <p><a href="/admin_dashboard.html">← Dashboard</a></p>
   </div>
 
 </body>

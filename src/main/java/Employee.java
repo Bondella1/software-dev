@@ -1,4 +1,3 @@
-package db;
 public class Employee{
     private int empid;
     private String Fname;
@@ -14,7 +13,7 @@ public class Employee{
     public String getFname() {return  Fname;}
     public void setFname(String Fname) {this.Fname =Fname;}
 
-    public String getLame() {return Lname;}
+    public String getLname() {return Lname;}
     public void setLname(String Lname) {this.Lname =Lname; }
 
     public String getemail() {return email; }

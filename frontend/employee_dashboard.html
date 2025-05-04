@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Employee Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+  <style>
+    /* Employee dashboard styles */
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #74ebd5, #acb6e5);
+      color: #333;
+      min-height: 100vh;
+    }
+
+    header {
+      background-color: #4f9df9;
+      color: white;
+      padding: 20px 40px;
+      text-align: left;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 22px;
+    }
+
+    .dashboard {
+      padding: 40px 20px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 16px;
+      padding: 30px 20px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.07);
+      text-align: center;
+      transition: all 0.25s ease;
+      cursor: pointer;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.15);
+    }
+
+    .card a {
+      text-decoration: none;
+      color: #1f2937;
+      font-weight: 600;
+      font-size: 16px;
+      display: block;
+      margin-top: 12px;
+    }
+
+    .icon {
+      font-size: 32px;
+      color: #4f46e5;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Employee Dashboard — Employee Management System</h1>
+  </header>
+
+  <section class="dashboard">
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-user"></i></div>
+      <a href="view_profile.html">View Profile</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-calendar-check"></i></div>
+      <a href="view_attendance.html">View Attendance</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-file-invoice-dollar"></i></div>
+      <a href="pay_statement.html">View Pay Statement</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-piggy-bank"></i></div>
+      <a href="salary_history.html">Salary History</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-cogs"></i></div>
+      <a href="update_preferences.html">Update Preferences</a>
+    </div>
+
+    <div class="card">
+      <div class="icon"><i class="fas fa-sign-out-alt"></i></div>
+      <a href="logout.html">Logout</a>
+    </div>
+
+  </section>
+
+</body>
+</html>

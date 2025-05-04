@@ -1,6 +1,6 @@
-package db;
 
 import java.sql.Connection;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -31,7 +31,7 @@ public class Main {
 
         Employee retrieved = dao.getemployeebyId(1000);
         if (retrieved != null) {
-            System.out.println(retrieved.getFname()+" "+ retrieved.getLame()+ "Retrieved "+ ",Salary: $"+ retrieved.getSalary());
+            System.out.println("Retrieved "+retrieved.getFname()+" "+ retrieved.getLname()+ ",Salary: $"+ retrieved.getSalary());
         } else{
             System.out.println("Employee not found");
         }

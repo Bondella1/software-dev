@@ -1,6 +1,7 @@
-package db;
-
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -37,6 +38,18 @@ public class Employeedao {
         return results;
     }
 
+    public List<Employee> getAllEmployees() throws SQLException {
+        String query = "SELECT * FROM employees";
+        List<Employee> results = new ArrayList<>();
+        try (PreparedStatement stmt = connection.prepareStatement(query);
+        ResultSet rs = stmt.executeQuery()) {
+            while (rs.next()) {
+                results.add(mapRowEmplyee(rs));
+            }
+        }
+        return results;
+    }
+
     private Employee mapRowEmplyee(ResultSet rs) throws SQLException {
         Employee e = new Employee();  
         e.setEmpId(rs.getInt("empid"));
@@ -54,7 +67,7 @@ public class Employeedao {
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setInt(1, e.getEmpId());
         stmt.setString(2, e.getFname());
-        stmt.setString(3, e.getLame());
+        stmt.setString(3, e.getLname());
         stmt.setString(4, e.getemail());
         stmt.setString(5, e.getSSN());
         stmt.setDouble(6, e.getSalary());
@@ -68,7 +81,7 @@ public class Employeedao {
         String query = "UPDATE employees SET Fname = ?, Lname=?, email=?, SSN=?, Salary=?, HireDate=? WHERE empid =?";
         PreparedStatement stmt = connection.prepareStatement(query);
         stmt.setString(1, e.getFname());
-        stmt.setString(2, e.getLame());
+        stmt.setString(2, e.getLname());
         stmt.setString(3, e.getemail());
         stmt.setString(4, e.getSSN());
         stmt.setDouble(5, e.getSalary());

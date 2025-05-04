@@ -120,11 +120,9 @@
           name="username"
           type="text"
           placeholder="E12345 or A12345"
-          pattern="[EA][0-9]{5}"
-          title="Must start with 'E' or 'A' followed by 5 digits"
+          pattern=".*"
           required
         >
-        <div class="tooltip">Starts with E or A, followed by 5 digits.</div>
       </div>
 
       <div class="form-group">
@@ -155,18 +153,8 @@
       passwordField.type = this.checked ? "text" : "password";
     });
 
-    //Show fake error message on incorrect login attempt
-    // Replace this block with real server-side validation
-    document.getElementById("loginForm").addEventListener("submit", function (e) {
-      const username = document.getElementById("username").value;
-      const password = document.getElementById("password").value;
-
-      // Simulated check (replace with real backend call)
-      if (username !== "E12345" || password !== "GoodPass123!") {
-        e.preventDefault(); // stop form submission
-        document.getElementById("errorMessage").style.display = "block";
-      }
-    });
+  
+      
   </script>
 
 </body>
